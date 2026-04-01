@@ -1,73 +1,105 @@
 from datetime import datetime
-from fastapi import FastAPI
-from sqlalchemy import ForeignKey
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession,async_sessionmaker
-from sqlalchemy.orm import DeclarativeBase,Mapped, mapped_column
+from fastapi import FastAPI, Request, Form, Depends
+from sqlalchemy import ForeignKey, text , select
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from pydantic import BaseModel
 import bcrypt
-from alembic import op
-from openpyxl import Workbook, load_workbook
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 app = FastAPI()
-engine = create_async_engine('sqlite+aiosqlite:///database.db')
 
-new_session = async_sessionmaker(engine, expire_on_commit=False) # создание сессии
+# Создание асинхронного движка и сессии
+engine = create_async_engine('sqlite+aiosqlite:///database.db', echo=True)
+async_session = async_sessionmaker(engine, expire_on_commit=False)
 
+templates = Jinja2Templates(directory="templates")
 
-async def get_session(): # метод для удобной работы с sqlalchemy
-    async with new_session as session:
+# Асинхронный генератор для работы с сессией
+async def get_session() -> AsyncSession:
+    async with async_session() as session:  # ВАЖНО: вызываем async_session()
         yield session
 
-class Base(DeclarativeBase): # пустой класс от которого будет наследоваться пользовательская модель и тд.
+# Базовый класс моделей
+class Base(DeclarativeBase):
     pass
 
-class Role(Base):# модель таблицы ролей пользователей
-    __tablename__ = "roles"
-    id:Mapped[int] = mapped_column(primary_key=True)
-    name:Mapped[str]
-    description:Mapped[str]
-
-class UserModel(Base): # модель таблицы пользователи
+# Модели
+class UserModel(Base):
     __tablename__ = "users"
-    id:Mapped[int] = mapped_column(primary_key=True)
-    username:Mapped[str]
-    email:Mapped[str]
-    hashed_password:Mapped[str]
-    role:Mapped[int] = mapped_column(ForeignKey("roles.id"))
-    created_at:Mapped[datetime]
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str]
+    email: Mapped[str]
+    hashed_password: Mapped[str]
+    role: Mapped[str]
+    created_at: Mapped[datetime]
 
-class EventModel(Base):# модель таблицы мероприятия
+class EventModel(Base):
     __tablename__ = "events"
-    id:Mapped[int] = mapped_column(primary_key=True)
-    title:Mapped[str]
-    description:Mapped[str]
-    event_date:Mapped[datetime]
-    type:Mapped[str]
-    created_by:Mapped[int] = mapped_column(ForeignKey("users.id"))
-    created_at:Mapped[datetime]
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str]
+    description: Mapped[str]
+    event_date: Mapped[datetime]
+    type: Mapped[str]
+    created_by: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    created_at: Mapped[datetime]
 
-class AchievementModel(Base):# модель таблицы достижений
+class AchievementModel(Base):
     __tablename__ = "achievements"
-    id:Mapped[int] = mapped_column(primary_key=True)
-    student_id:Mapped[int] = mapped_column(ForeignKey("users.id"))
-    event_id:Mapped[int] = mapped_column(ForeignKey("events.id"))
-    category:Mapped[str]
-    result:Mapped[str]
-    document_url:Mapped[str]
-    created_at:Mapped[datetime]
+    id: Mapped[int] = mapped_column(primary_key=True)
+    student_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    event_id: Mapped[int] = mapped_column(ForeignKey("events.id"))
+    category: Mapped[str]
+    result: Mapped[str]
+    document_url: Mapped[str]
+    created_at: Mapped[datetime]
 
-@app.get("/", summary = "Главная страница")
-def root():
-    return "Hello World"
-@app.post("/register",summary = "Регистрация")
-def register_user():
-    return "Регистрация пользователя"
-@app.post("/login",summary = "Вход")
-def register_user():
-    return "Вход пользователя"
-@app.post("/setup_database",summary = "Создание базы данных")
-async def setup_database():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all)
-    return {"ok":True}
+# Роуты
+@app.get("/", summary="Вход")
+def login_user(request: Request):
+    return templates.TemplateResponse("extrance.html", {"request": request})
+
+@app.get("/register", summary="Форма регистрации")
+def get_form(request: Request):
+    return templates.TemplateResponse("reg.html", {"request": request})
+
+@app.post("/register", summary="Добавление пользователя")
+async def add_user(
+    request: Request,
+    username: str = Form(...),
+    password: str = Form(...),
+    email: str = Form(...),
+    roles: str = Form(...),
+    session: AsyncSession = Depends(get_session)  # Используем dependency injection
+):
+    password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+    user = UserModel(
+        username=username,
+        email=email,
+        hashed_password=password_hash.decode("utf-8"),
+        role=roles,
+        created_at=datetime.utcnow()  # UTC время
+    )
+    session.add(user)
+    await session.commit()
+    return RedirectResponse("/", status_code=303)  # 303 для POST->GET redirect
+
+@app.get("/users")
+async def get_users(session: AsyncSession = Depends(get_session)):
+    # ORM-запрос возвращает объекты UserModel
+    result = await session.execute(select(UserModel))
+    users = result.scalars().all()  # scalars() превращает Result в объекты модели
+
+    # Конвертируем в словари для JSON
+    return [
+        {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "password": user.hashed_password,
+            "role": user.role,
+            "created_at": user.created_at.isoformat()
+        }
+        for user in users
+    ]
