@@ -56,9 +56,20 @@ class AchievementModel(Base):
     created_at: Mapped[datetime]
 
 # Роуты
-@app.get("/", summary="Вход")
+@app.get("/", summary="Форма входа")
 def login_user(request: Request):
     return templates.TemplateResponse("extrance.html", {"request": request})
+@app.post("/", summary="Вход в кабинет и проверка на совпадение пользователя")
+async def login_user(request: Request, username: str = Form(...), password: str = Form(...), session: AsyncSession = Depends(get_session)):
+    result = await session.execute(select(UserModel).where(UserModel.username == username))
+    user = result.scalars().first()
+    if(user.username == username and bcrypt.checkpw(password.encode("utf-8"), user.hashed_password.encode("utf-8"))):
+        return RedirectResponse("/person_account", status_code=303)
+
+
+@app.get("/person_account")
+def person_account(request: Request):
+    return "Добро пожаловать!"
 
 @app.get("/register", summary="Форма регистрации")
 def get_form(request: Request):
@@ -85,9 +96,8 @@ async def add_user(
     await session.commit()
     return RedirectResponse("/", status_code=303)  # 303 для POST->GET redirect
 
-@app.get("/users")
+@app.get("/users",summary="Получение пользователей")
 async def get_users(session: AsyncSession = Depends(get_session)):
-    # ORM-запрос возвращает объекты UserModel
     result = await session.execute(select(UserModel))
     users = result.scalars().all()  # scalars() превращает Result в объекты модели
 
