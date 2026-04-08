@@ -4,20 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="46f17b5b-e230-416a-8100-d06e9d11e43c" name="Changes" comment="подключены стили для html, а также добавлены стили для регистрации и входа в личный кабинет">
-      <change afterPath="$PROJECT_DIR$/static/style_personalaccount2.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/style_personalaccount3.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/style_settings.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/settings.html" afterDir="false" />
+    <list default="true" id="46f17b5b-e230-416a-8100-d06e9d11e43c" name="Changes" comment="добавлены новые функции">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/auth.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/pages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/style_personalaccount.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style_personalaccount1.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/personal_account_administrator.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/personal_account_administrator.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/personal_account_student.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/personal_account_student.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/personal_account_teacher.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/personal_account_teacher.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,7 +148,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775655487581</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="добавлены новые функции">
+      <option name="closed" value="true" />
+      <created>1775660083595</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1775660083595</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -178,6 +176,7 @@
     <MESSAGE value="обновлено расположение файлов добавлены новые страницы личного кабинета" />
     <MESSAGE value="малые изменения" />
     <MESSAGE value="подключены стили для html, а также добавлены стили для регистрации и входа в личный кабинет" />
-    <option name="LAST_COMMIT_MESSAGE" value="подключены стили для html, а также добавлены стили для регистрации и входа в личный кабинет" />
+    <MESSAGE value="добавлены новые функции" />
+    <option name="LAST_COMMIT_MESSAGE" value="добавлены новые функции" />
   </component>
 </project>

@@ -21,6 +21,7 @@ def person_account_teacher(request: Request):
     username = request.session["username"]
     return f"Добро пожаловать преподаватель {username} !"
 
+
 @router.get("/person_account_administrator")
 def person_account_administrator(request: Request):
     username = request.session["username"]
@@ -44,5 +45,23 @@ def person_account_administrator(request: Request, option: str = Form(...)):
 def settings(request: Request, option: str = Form(...)):
     username = request.session["username"]
     email = request.session["email"]
-    password = request.session["password"]
-    return templates.TemplateResponse("settings.html", {"request": request,"username": username,"email": email})
+    return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
+@router.post("/setings")
+def settings(request: Request, option: str = Form(None),changepassword: str = Form(None),exitaccount:str = Form(None)):
+    username = request.session["username"]
+    email = request.session["email"]
+    if option == "home":
+        return templates.TemplateResponse("personal_account_administrator.html",{"request": request, "username": username})
+    elif option == "table_users":
+        return RedirectResponse("/users", status_code=303)
+    elif option == "table_events":
+        return RedirectResponse("/events", status_code=303)
+    elif option == "table_achievements":
+        return RedirectResponse("/achievements", status_code=303)
+    elif option == "settings":
+        return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
+    if changepassword == "change":
+        return "Пока эта функция не реализована!"
+    if exitaccount == "exit":
+        request.session.clear()
+        return RedirectResponse("/", status_code=303)
