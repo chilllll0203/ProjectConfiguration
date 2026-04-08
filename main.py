@@ -18,7 +18,7 @@ templates = Jinja2Templates(directory="templates")
 
 # Асинхронный генератор для работы с сессией
 async def get_session() -> AsyncSession:
-    async with async_session() as session:  # ВАЖНО: вызываем async_session()
+    async with async_session() as session:
         yield session
 
 # Базовый класс моделей
@@ -26,7 +26,7 @@ class Base(DeclarativeBase):
     pass
 
 # Модели
-class UserModel(Base):
+class UserModel(Base): # Модель пользователя
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str]
@@ -35,7 +35,7 @@ class UserModel(Base):
     role: Mapped[str]
     created_at: Mapped[datetime]
 
-class EventModel(Base):
+class EventModel(Base): # Moдель мероприятия
     __tablename__ = "events"
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str]
@@ -45,7 +45,7 @@ class EventModel(Base):
     created_by: Mapped[int] = mapped_column(ForeignKey("users.id"))
     created_at: Mapped[datetime]
 
-class AchievementModel(Base):
+class AchievementModel(Base): # Модель достижения
     __tablename__ = "achievements"
     id: Mapped[int] = mapped_column(primary_key=True)
     student_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
@@ -56,10 +56,10 @@ class AchievementModel(Base):
     created_at: Mapped[datetime]
 
 # Роуты
-@app.get("/", summary="Форма входа")
+@app.get("/", summary="Форма входа") # роут входа гет
 def login_user(request: Request):
     return templates.TemplateResponse("extrance.html", {"request": request})
-@app.post("/", summary="Вход в кабинет и проверка на совпадение пользователя")
+@app.post("/", summary="Вход в кабинет и проверка на совпадение пользователя") # роут входа пост
 async def login_user(request: Request, username: str = Form(...), password: str = Form(...), session: AsyncSession = Depends(get_session)):
     result = await session.execute(select(UserModel).where(UserModel.username == username))
     user = result.scalars().first()
@@ -67,22 +67,22 @@ async def login_user(request: Request, username: str = Form(...), password: str 
         return RedirectResponse("/person_account", status_code=303)
 
 
-@app.get("/person_account")
+@app.get("/person_account") # роут личного кабинета гет
 def person_account(request: Request):
     return "Добро пожаловать!"
 
-@app.get("/register", summary="Форма регистрации")
+@app.get("/register", summary="Форма регистрации") # роут регистрации гет
 def get_form(request: Request):
     return templates.TemplateResponse("reg.html", {"request": request})
 
-@app.post("/register", summary="Добавление пользователя")
+@app.post("/register", summary="Добавление пользователя") # роут регистрации пост
 async def add_user(
     request: Request,
     username: str = Form(...),
     password: str = Form(...),
     email: str = Form(...),
     roles: str = Form(...),
-    session: AsyncSession = Depends(get_session)  # Используем dependency injection
+    session: AsyncSession = Depends(get_session)  # Используем зависимость
 ):
     password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     user = UserModel(
@@ -96,7 +96,7 @@ async def add_user(
     await session.commit()
     return RedirectResponse("/", status_code=303)  # 303 для POST->GET redirect
 
-@app.get("/users",summary="Получение пользователей")
+@app.get("/users",summary="Получение пользователей") # роут для получения всех пользователей из таблицы User базы данных
 async def get_users(session: AsyncSession = Depends(get_session)):
     result = await session.execute(select(UserModel))
     users = result.scalars().all()  # scalars() превращает Result в объекты модели
