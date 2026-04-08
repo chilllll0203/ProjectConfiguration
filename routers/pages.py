@@ -1,9 +1,13 @@
+from datetime import datetime
+
 from fastapi import APIRouter, Request, Form, Depends
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from deps import get_session
 from models import AchievementModel, EventModel
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 router = APIRouter()
 
@@ -89,7 +93,8 @@ def add_achievements(request: Request, option: str = Form(None)):
     email = request.session["email"]
     return templates.TemplateResponse("add_achievements.html", {"request": request})
 @router.post("/add_achievements")
-def add_achievements(request: Request, option: str = Form(None)):
+async def add_achievements(request: Request, option: str = Form(None),nameEvent:str = Form(...),category:str = Form(...),result:str = Form(...),document_url:str = Form(...),Add:str = Form(None),session: AsyncSession = Depends(get_session)):
+    user_id = request.session["user_id"]
     username = request.session["username"]
     email = request.session["email"]
     if option == "home":
@@ -100,6 +105,20 @@ def add_achievements(request: Request, option: str = Form(None)):
         return templates.TemplateResponse("add_achievements.html", {"request": request})
     elif option == "settings":
         return templates.TemplateResponse("settingsadmin.html", {"request": request, "username": username, "email": email})
+    if Add:
+        result = await session.execute(select(EventModel).where(EventModel.title == nameEvent))
+        event = result.scalars().first()
+        achievement = AchievementModel(
+            student_id = user_id,
+            event_id = event.id,
+            category = category,
+            result = result,
+            document_url = document_url,
+            create_date = datetime.now()
+        )
+        session.add(achievement)
+        await session.commit()
+        return RedirectResponse("/view_your_achievements", status_code=303)
 
 @router.get("/setingsstudent")
 def settings(request: Request, option: str = Form(...)):

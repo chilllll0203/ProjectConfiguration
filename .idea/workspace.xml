@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="46f17b5b-e230-416a-8100-d06e9d11e43c" name="Changes" comment="добавлены новые функции">
-      <change afterPath="$PROJECT_DIR$/static/style_addachievements.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/settingsstudent.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/pages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/add_achievements.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/add_achievements.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settingsadmin.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775663234341</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="добавлены новые функции">
+      <option name="closed" value="true" />
+      <created>1775664466019</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1775664466019</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
