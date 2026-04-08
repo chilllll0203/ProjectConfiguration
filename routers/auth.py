@@ -12,8 +12,6 @@ from deps import get_session
 
 router = APIRouter()
 
-# Секретный ключ
-router.add_middleware(SessionMiddleware, secret_key="secret")
 
 # Шаблонизатор для загрузки html-страниц
 templates = Jinja2Templates(directory="templates")
