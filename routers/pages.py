@@ -2,10 +2,10 @@ from fastapi import APIRouter, Request, Form, Depends
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
-
+from deps import get_session
+from models import AchievementModel, EventModel
 
 router = APIRouter()
-
 
 # Шаблонизатор для загрузки html-страниц
 templates = Jinja2Templates(directory="templates")
