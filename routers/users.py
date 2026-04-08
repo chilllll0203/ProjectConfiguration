@@ -10,8 +10,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from models import UserModel
 from deps import get_session
 
-router = APIRouter
-
+router = APIRouter()
 
 # Шаблонизатор для загрузки html-страниц
 templates = Jinja2Templates(directory="templates")
