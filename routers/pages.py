@@ -1,0 +1,29 @@
+from fastapi import APIRouter, Request, Form, Depends
+from starlette.middleware.sessions import SessionMiddleware
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse, RedirectResponse
+
+
+router = APIRouter()
+
+# Секретный ключ
+router.add_middleware(SessionMiddleware, secret_key="secret")
+
+# Шаблонизатор для загрузки html-страниц
+templates = Jinja2Templates(directory="templates")
+
+
+@router.get("/person_account_student")
+def person_account(request: Request):
+    username = request.session["username"]
+    return f"Добро пожаловать студент {username} !"
+
+@router.get("/person_account_teacher")
+def person_account(request: Request):
+    username = request.session["username"]
+    return f"Добро пожаловать преподаватель {username} !"
+
+@router.get("/person_account_administrator")
+def person_account(request: Request):
+    username = request.session["username"]
+    return f"Добро пожаловать администратор {username} !"
