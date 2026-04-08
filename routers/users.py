@@ -7,7 +7,7 @@ from datetime import datetime
 import bcrypt
 from starlette.middleware.sessions import SessionMiddleware
 
-from models import UserModel
+from models import UserModel,AchievementModel,EventModel
 from deps import get_session
 
 router = APIRouter()
@@ -32,4 +32,42 @@ async def get_users(session: AsyncSession = Depends(get_session)):
             "created_at": user.created_at.isoformat()
         }
         for user in users
+    ]
+@router.get("/events",summary="Получение мероприятий")
+async def get_events(session: AsyncSession = Depends(get_session)):
+    result = await session.execute(select(EventModel))
+    events = result.scalars().all()  # scalars() превращает Result в объекты модели
+    with open("log.txt", "a", encoding="utf-8") as file:
+        file.writelines("Администратор запросил таблицу с мероприятиями " + datetime.now().isoformat() + "\n")
+    # Конвертируем в словари для JSON
+    return [
+        {
+            "id": event.id,
+            "title": event.title,
+            "description": event.description,
+            "event_date": event.event_date.isoformat(),
+            "type": event.type,
+            "created_by": event.created_by,
+            "created_at": event.created_at.isoformat(),
+        }
+        for event in events
+    ]
+@router.get("/achievements",summary="Получение достижений")
+async def get_achievements(session: AsyncSession = Depends(get_session)):
+    result = await session.execute(select(AchievementModel))
+    achievements = result.scalars().all()  # scalars() превращает Result в объекты модели
+    with open("log.txt", "a", encoding="utf-8") as file:
+        file.writelines("Администратор запросил таблицу с достижениями " + datetime.now().isoformat() + "\n")
+    # Конвертируем в словари для JSON
+    return [
+        {
+            "id": achievement.id,
+            "student_id": achievement.student_id,
+            "event_id": achievement.event_id,
+            "category": achievement.category,
+            "result": achievement.result,
+            "document_url": achievement.document_url,
+            "created_at": achievement.created_at.isoformat(),
+        }
+        for achievement in achievements
     ]

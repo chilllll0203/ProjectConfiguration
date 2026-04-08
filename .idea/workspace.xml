@@ -4,20 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="46f17b5b-e230-416a-8100-d06e9d11e43c" name="Changes" comment="малые изменения">
-      <change afterPath="$PROJECT_DIR$/static/style_extrance.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/style_personalaccount.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/style_reg.css" afterDir="false" />
+    <list default="true" id="46f17b5b-e230-416a-8100-d06e9d11e43c" name="Changes" comment="подключены стили для html, а также добавлены стили для регистрации и входа в личный кабинет">
+      <change afterPath="$PROJECT_DIR$/static/style_personalaccount2.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/style_personalaccount3.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/style_settings.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/settings.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/auth.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/pages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/extrance.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/extrance.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/style_personalaccount.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style_personalaccount1.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/personal_account_administrator.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/personal_account_administrator.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/personal_account_student.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/personal_account_student.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/personal_account_teacher.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/personal_account_teacher.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/reg.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/reg.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +27,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -78,9 +78,15 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Андрей/PycharmProjects/ProjectConfiguration",
     "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Андрей\PycharmProjects\ProjectConfiguration" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -144,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775654516842</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="подключены стили для html, а также добавлены стили для регистрации и входа в личный кабинет">
+      <option name="closed" value="true" />
+      <created>1775655487581</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1775655487581</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -163,6 +177,7 @@
     <MESSAGE value="обновлен проект доделана страница входа, а также прописан функционал проверки логина и пароля перед входом в личный кабинет" />
     <MESSAGE value="обновлено расположение файлов добавлены новые страницы личного кабинета" />
     <MESSAGE value="малые изменения" />
-    <option name="LAST_COMMIT_MESSAGE" value="малые изменения" />
+    <MESSAGE value="подключены стили для html, а также добавлены стили для регистрации и входа в личный кабинет" />
+    <option name="LAST_COMMIT_MESSAGE" value="подключены стили для html, а также добавлены стили для регистрации и входа в личный кабинет" />
   </component>
 </project>

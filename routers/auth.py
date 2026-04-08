@@ -24,6 +24,7 @@ async def login_user(request: Request, username: str = Form(...), password: str 
     result = await session.execute(select(UserModel).where(UserModel.username == username))
     user = result.scalars().first()
     request.session["username"] = user.username
+    request.session["email"] = user.email
     if(user.username == username and bcrypt.checkpw(password.encode("utf-8"), user.hashed_password.encode("utf-8"))):
         if(user.role == "student"):
             return RedirectResponse("/person_account_student", status_code=303)
