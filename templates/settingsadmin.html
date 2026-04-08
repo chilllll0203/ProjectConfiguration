@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/style_settings.css">
+    <title>Настройки</title>
+</head>
+<body>
+<h1>Настройки</h1>
+    <form action="/setingsadmin" method="post" class="menu-form">
+        <button type="submit" name="option" value="home">Главная</button>
+        <button type="submit" name="option" value="table_users">Таблица пользователей</button>
+        <button type="submit" name="option" value="table_events">Таблица мероприятий</button>
+        <button type="submit" name="option" value="table_achievements">Таблица достижений</button>
+        <button type="submit" name="option" value="settings">Настройки</button>
+    </form>
+    <form action="/setingsadmin" method="post" class="settings-information">
+        <text>Имя пользователя: {{username}}</text>
+        <text>Почта пользователя: {{email}}</text>
+        <button type="submit" name="changepassword" value="change">Сменить пароль</button>
+        <button type="submit" name="exitaccount" value="exit">Выйти из аккаунта</button>
+    </form>
+</body>
+</html>

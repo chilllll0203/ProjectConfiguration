@@ -25,9 +25,9 @@ def person_account_student(request: Request, option: str = Form(...)):
     elif option == "view_your_achievements":
         return RedirectResponse("/view_your_achievements", status_code=303)
     elif option == "add_achievements":
-        return RedirectResponse("/events", status_code=303)
+        return templates.TemplateResponse("add_achievements.html", {"request": request})
     elif option == "settings":
-        return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
+        return templates.TemplateResponse("settingsstudent.html", {"request": request, "username": username, "email": email})
 
 @router.get("/person_account_teacher")
 def person_account_teacher(request: Request):
@@ -56,14 +56,14 @@ def person_account_administrator(request: Request, option: str = Form(...)):
     elif option == "table_achievements":
         return RedirectResponse("/achievements",status_code=303)
     elif option == "settings":
-        return templates.TemplateResponse("settings.html", {"request": request,"username": username,"email": email})
+        return templates.TemplateResponse("settingsadmin.html", {"request": request,"username": username,"email": email})
 
-@router.get("/setings")
+@router.get("/setingsadmin")
 def settings(request: Request, option: str = Form(...)):
     username = request.session["username"]
     email = request.session["email"]
-    return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
-@router.post("/setings")
+    return templates.TemplateResponse("settingsadmin.html", {"request": request, "username": username, "email": email})
+@router.post("/setingsadmin")
 def settings(request: Request, option: str = Form(None),changepassword: str = Form(None),exitaccount:str = Form(None)):
     username = request.session["username"]
     email = request.session["email"]
@@ -76,7 +76,7 @@ def settings(request: Request, option: str = Form(None),changepassword: str = Fo
     elif option == "table_achievements":
         return RedirectResponse("/achievements", status_code=303)
     elif option == "settings":
-        return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
+        return templates.TemplateResponse("settingsadmin.html", {"request": request, "username": username, "email": email})
     if changepassword == "change":
         return "Пока эта функция не реализована!"
     if exitaccount == "exit":
@@ -87,7 +87,7 @@ def settings(request: Request, option: str = Form(None),changepassword: str = Fo
 def add_achievements(request: Request, option: str = Form(None)):
     username = request.session["username"]
     email = request.session["email"]
-    return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
+    return templates.TemplateResponse("add_achievements.html", {"request": request})
 @router.post("/add_achievements")
 def add_achievements(request: Request, option: str = Form(None)):
     username = request.session["username"]
@@ -97,7 +97,30 @@ def add_achievements(request: Request, option: str = Form(None)):
     elif option == "view_your_achievements":
         return RedirectResponse("/view_your_achievements", status_code=303)
     elif option == "add_achievements":
-        return RedirectResponse("/events", status_code=303)
+        return templates.TemplateResponse("add_achievements.html", {"request": request})
     elif option == "settings":
-        return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
+        return templates.TemplateResponse("settingsadmin.html", {"request": request, "username": username, "email": email})
+
+@router.get("/setingsstudent")
+def settings(request: Request, option: str = Form(...)):
+    username = request.session["username"]
+    email = request.session["email"]
+    return templates.TemplateResponse("settingsstudent.html", {"request": request, "username": username, "email": email})
+@router.post("/setingsstudent")
+def settings(request: Request, option: str = Form(None),changepassword: str = Form(None),exitaccount:str = Form(None)):
+    username = request.session["username"]
+    email = request.session["email"]
+    if option == "home":
+        return templates.TemplateResponse("personal_account_student.html", {"request": request, "username": username})
+    elif option == "view_your_achievements":
+        return RedirectResponse("/view_your_achievements", status_code=303)
+    elif option == "add_achievements":
+        return templates.TemplateResponse("add_achievements.html", {"request": request})
+    elif option == "settings":
+        return templates.TemplateResponse("settingsstudent.html",{"request": request, "username": username, "email": email})
+    if changepassword == "change":
+        return "Пока эта функция не реализована!"
+    if exitaccount == "exit":
+        request.session.clear()
+        return RedirectResponse("/", status_code=303)
 

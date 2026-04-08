@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/style_addachievements.css">
     <title>Добавление достижения</title>
 </head>
 <body>
@@ -18,9 +19,10 @@
 
         <label for="category">Выберите категорию достижения:</label>
         <select id="category" name="category" required>
-            <option value="student">Студент</option>
-            <option value="teacher">Преподаватель</option>
-            <option value="administrator">Администратор</option>
+            <option value="academic">Академическое достижение</option>
+            <option value="creative">Творческое достижение</option>
+            <option value="sports">Спортивное достижение</option>
+            <option value="public">Общественное достижение</option>
         </select><br><br>
 
         <label for="result">Введите результат достижения:</label>
@@ -28,6 +30,8 @@
 
         <label for="document_url">Введите url документа подтверждающее достижение:</label>
         <input type="text" id="document_url" name="document_url" required><br><br>
+
+        <button type="submit" name="Add" value="Add">Добавить достижение</button>
     </form>
 </body>
 </html>
