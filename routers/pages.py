@@ -101,7 +101,7 @@ def setings_admin(request: Request, option: str = Form(None),changepassword: str
 def add_achievements(request: Request, option: str = Form(None)):
     return templates.TemplateResponse("add_achievements.html", {"request": request})
 @router.post("/add_achievements")
-async def add_achievements(request: Request, option: str = Form(None),nameEvent:str = Form(...),category:str = Form(...),result:str = Form(...),document_url:str = Form(...),addachievement:str = Form(None),session: AsyncSession = Depends(get_session)):
+async def add_achievements(request: Request, option: str = Form(None),nameEvent:str = Form(None),category:str = Form(None),result_achievement:str = Form(None),document_url:str = Form(None),addachievement:str = Form(None),session: AsyncSession = Depends(get_session)):
     user_id = request.session["user_id"]
     username = request.session["username"]
     email = request.session["email"]
@@ -120,9 +120,9 @@ async def add_achievements(request: Request, option: str = Form(None),nameEvent:
             student_id = user_id,
             event_id = event.id,
             category = category,
-            result = result,
+            result = result_achievement,
             document_url = document_url,
-            create_date = datetime.now()
+            created_at = datetime.now()
         )
         session.add(achievement)
         await session.commit()
@@ -131,10 +131,10 @@ async def add_achievements(request: Request, option: str = Form(None),nameEvent:
 
 # Добавление мероприятия (может добавлять только преподаватель)
 @router.get("/add_event")
-def add_achievements(request: Request, option: str = Form(None)):
+def add_event(request: Request, option: str = Form(None)):
     return templates.TemplateResponse("add_achievements.html", {"request": request})
 @router.post("/add_event")
-async def add_achievements(request: Request, option: str = Form(None),title:str = Form(...),description:str = Form(...),event_date:str = Form(...),type:str = Form(...),addevent:str = Form(None),session: AsyncSession = Depends(get_session)):
+async def add_event(request: Request, option: str = Form(None),title:str = Form(...),description:str = Form(...),event_date:str = Form(...),type:str = Form(...),addevent:str = Form(None),session: AsyncSession = Depends(get_session)):
     user_id = request.session["user_id"]
     username = request.session["username"]
     email = request.session["email"]
@@ -150,11 +150,12 @@ async def add_achievements(request: Request, option: str = Form(None),title:str 
         event = EventModel(
             title = title,
             description = description,
-            event_date = event_date,
+            event_date = datetime.strptime(event_date, '%Y-%m-%d').date(),
             type = type,
             created_by = user_id,
             created_at = datetime.now()
         )
+        session.add(event)
         await session.commit()
         return RedirectResponse("/events", status_code=303)
 
