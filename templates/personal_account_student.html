@@ -6,6 +6,12 @@
     <title>Личный кабинет студента {{username}}</title>
 </head>
 <body>
-
+    <h1>Личный Кабинет</h1>
+    <form action="/person_account_student" method="post" class="menu-form">
+        <button type="submit" name="option" value="home">Главная</button>
+        <button type="submit" name="option" value="view_your_achievements">Просмотреть свои достижения</button>
+        <button type="submit" name="option" value="add_achievements">Добавить достижение</button>
+        <button type="submit" name="option" value="settings">Настройки</button>
+    </form>
 </body>
 </html>

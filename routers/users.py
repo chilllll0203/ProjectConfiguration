@@ -71,3 +71,23 @@ async def get_achievements(session: AsyncSession = Depends(get_session)):
         }
         for achievement in achievements
     ]
+
+@router.get("/view_your_achievements",summary="Получение достижений определенного пользователя")
+async def view_your_achievements(request: Request,session: AsyncSession = Depends(get_session)):
+    username = request.session["username"]
+    result = await session.execute(select(UserModel).where(UserModel.username == username))
+    user = result.scalars().first()
+    result = await session.execute(select(AchievementModel).where(AchievementModel.student_id == user.id))
+    achievements = result.scalars().all()
+    return [
+        {
+            "id": achievement.id,
+            "student_id": achievement.student_id,
+            "event_id": achievement.event_id,
+            "category": achievement.category,
+            "result": achievement.result,
+            "document_url": achievement.document_url,
+            "created_at": achievement.created_at.isoformat(),
+        }
+        for achievement in achievements
+    ]

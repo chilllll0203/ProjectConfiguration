@@ -14,9 +14,26 @@ templates = Jinja2Templates(directory="templates")
 @router.get("/person_account_student")
 def person_account_student(request: Request):
     username = request.session["username"]
-    return f"Добро пожаловать студент {username} !"
+    return templates.TemplateResponse("personal_account_student.html", {"request": request, "username": username})
+@router.post("/person_account_student")
+def person_account_student(request: Request, option: str = Form(...)):
+    user_id = request.session["user_id"]
+    username = request.session["username"]
+    email = request.session["email"]
+    if option == "home":
+        return templates.TemplateResponse("personal_account_student.html",{"request": request, "username": username})
+    elif option == "view_your_achievements":
+        return RedirectResponse("/view_your_achievements", status_code=303)
+    elif option == "add_achievements":
+        return RedirectResponse("/events", status_code=303)
+    elif option == "settings":
+        return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
 
 @router.get("/person_account_teacher")
+def person_account_teacher(request: Request):
+    username = request.session["username"]
+    return f"Добро пожаловать преподаватель {username} !"
+@router.post("/person_account_teacher")
 def person_account_teacher(request: Request):
     username = request.session["username"]
     return f"Добро пожаловать преподаватель {username} !"
@@ -65,3 +82,22 @@ def settings(request: Request, option: str = Form(None),changepassword: str = Fo
     if exitaccount == "exit":
         request.session.clear()
         return RedirectResponse("/", status_code=303)
+
+@router.get("/add_achievements")
+def add_achievements(request: Request, option: str = Form(None)):
+    username = request.session["username"]
+    email = request.session["email"]
+    return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
+@router.post("/add_achievements")
+def add_achievements(request: Request, option: str = Form(None)):
+    username = request.session["username"]
+    email = request.session["email"]
+    if option == "home":
+        return templates.TemplateResponse("personal_account_student.html",{"request": request, "username": username})
+    elif option == "view_your_achievements":
+        return RedirectResponse("/view_your_achievements", status_code=303)
+    elif option == "add_achievements":
+        return RedirectResponse("/events", status_code=303)
+    elif option == "settings":
+        return templates.TemplateResponse("settings.html", {"request": request, "username": username, "email": email})
+

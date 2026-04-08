@@ -23,6 +23,7 @@ def login_user(request: Request):
 async def login_user(request: Request, username: str = Form(...), password: str = Form(...), session: AsyncSession = Depends(get_session)):
     result = await session.execute(select(UserModel).where(UserModel.username == username))
     user = result.scalars().first()
+    request.session["user_id"] = user.id
     request.session["username"] = user.username
     request.session["email"] = user.email
     if(user.username == username and bcrypt.checkpw(password.encode("utf-8"), user.hashed_password.encode("utf-8"))):
