@@ -16,9 +16,9 @@ router = APIRouter()
 # Шаблонизатор для загрузки html-страниц
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/", summary="Форма входа")
+@router.get("/")  # или ваш путь, например "/"
 def login_user(request: Request):
-    return templates.TemplateResponse("extrance.html", {"request": request})
+    return templates.TemplateResponse(request, "extrance.html")
 @router.post("/", summary="Вход в кабинет и проверка на совпадение пользователя")
 async def login_user(request: Request, username: str = Form(...), password: str = Form(...), session: AsyncSession = Depends(get_session)):
     result = await session.execute(select(UserModel).where(UserModel.username == username))
@@ -38,7 +38,7 @@ async def login_user(request: Request, username: str = Form(...), password: str 
 
 @router.get("/register", summary="Форма регистрации")
 def get_form(request: Request):
-    return templates.TemplateResponse("reg.html", {"request": request})
+    return templates.TemplateResponse(request, "reg.html")
 
 @router.post("/register", summary="Добавление пользователя")
 async def add_user(
