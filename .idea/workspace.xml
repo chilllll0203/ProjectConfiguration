@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="46f17b5b-e230-416a-8100-d06e9d11e43c" name="Changes" comment="добавлены новые функции">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/settingsadmin.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settingsadmin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/settingsstudent.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settingsstudent.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/settingsteacher.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settingsteacher.html" afterDir="false" />
-    </list>
+    <list default="true" id="46f17b5b-e230-416a-8100-d06e9d11e43c" name="Changes" comment="исправлены опечатки" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,15 +34,12 @@
     &quot;assignee&quot;: &quot;chilllll0203&quot;
   }
 }</component>
-  <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="3eee45eb-884a-494a-b031-a867bba3c7e7" />
-  </component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/chilllll0203/ProjectConfiguration.git&quot;,
-    &quot;accountId&quot;: &quot;3eee45eb-884a-494a-b031-a867bba3c7e7&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/chilllll0203/ProjectConfiguration.git",
+    "accountId": "d0465ff9-9941-40a3-ba8e-5b77174095d0"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -201,7 +189,15 @@
       <option name="project" value="LOCAL" />
       <updated>1775667395758</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="исправлены опечатки">
+      <option name="closed" value="true" />
+      <created>1776170234981</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1776170234981</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -222,7 +218,8 @@
     <MESSAGE value="малые изменения" />
     <MESSAGE value="подключены стили для html, а также добавлены стили для регистрации и входа в личный кабинет" />
     <MESSAGE value="добавлены новые функции" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавлены новые функции" />
+    <MESSAGE value="исправлены опечатки" />
+    <option name="LAST_COMMIT_MESSAGE" value="исправлены опечатки" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
