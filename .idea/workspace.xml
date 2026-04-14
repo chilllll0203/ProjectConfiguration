@@ -5,13 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="46f17b5b-e230-416a-8100-d06e9d11e43c" name="Changes" comment="добавлены новые функции">
-      <change beforePath="$PROJECT_DIR$/.idea/ProjectConfiguration.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ProjectConfiguration.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/pages.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/settingsadmin.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settingsadmin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/settingsstudent.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settingsstudent.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/settingsteacher.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settingsteacher.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +43,9 @@
     &quot;assignee&quot;: &quot;chilllll0203&quot;
   }
 }</component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="3eee45eb-884a-494a-b031-a867bba3c7e7" />
+  </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/chilllll0203/ProjectConfiguration.git&quot;,
@@ -81,7 +85,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-2653e85de345-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.31033.139" />
+        <option value="bundled-python-sdk-4e2b1448bda8-9a97661f3031-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.27397.106" />
       </set>
     </attachedChunks>
   </component>
@@ -224,8 +228,8 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/routers/users.py</url>
-          <option name="timeStamp" value="2" />
+          <url>file://$PROJECT_DIR$/routers/pages.py</url>
+          <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
