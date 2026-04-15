@@ -9,6 +9,8 @@ engine = create_async_engine(
 )
 async_session = async_sessionmaker(engine, expire_on_commit=False)
 
+router = APIRouter()
+
 @router.post("/setup_database")
 async def setup_database():
     async with engine.begin() as conn:
