@@ -1,1 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    min-height: 100vh;
+}
+
+h1 {
+    font-weight: 400;
+    font-size: 2rem;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.menu-form {
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    padding: 12px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 0 0 12px 12px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.menu-form button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu-form button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.add_event {
+    background-color: #fff;
+    max-width: 520px;
+    margin: 30px auto;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.add_event br {
+    display: none;
+}
+
+.add_event label {
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.add_event input,
+.add_event select {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.add_event input:focus,
+.add_event select:focus {
+    border-color: #007BFF;
+}
+
+.add_event button {
+    margin-top: 10px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add_event button:hover {
+    background-color: #1e7e34;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+    .menu-form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu-form button {
+        width: 90%;
+    }
+
+    .add_event {
+        width: 90%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+}
