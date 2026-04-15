@@ -3,7 +3,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 
-from routers import auth, users, pages, create_database
+from routers import auth, users, pages, database
 
 app = FastAPI()
 
@@ -15,7 +15,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(pages.router)
-app.include_router(create_database.router)
+app.include_router(database.router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0")
