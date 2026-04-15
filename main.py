@@ -3,7 +3,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
 
-from routers import auth, users, pages
+from routers import auth, users, pages, create_database
 
 app = FastAPI()
 
