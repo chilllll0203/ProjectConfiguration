@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/style_personalaccount2.css">
+    <link rel="stylesheet" href="/static/style_profile.css">
     <title>Личный кабинет преподавателя {{username}}</title>
 </head>
 <body>
+<header>
     <h1>Личный Кабинет</h1>
-    <form action="/person_account_teacher" method="post" class="menu-form">
-        <button type="submit" name="option" value="home">Главная</button>
-        <button type="submit" name="option" value="view_all_events">Просмотреть все мероприятия</button>
-        <button type="submit" name="option" value="add_event">Добавить мероприятие</button>
-        <button type="submit" name="option" value="settings">Настройки</button>
-    </form>
+    <div class="menu-form">
+        <a href="/profile">Главная</a>
+        <a href="">Просмотреть все мероприятия</a>
+        <a href="">Добавить мероприятие</a>
+        <a href="/settings">Настройки</a>
+    </div>
+</header>
+<main>
+
+</main>
 </body>
 </html>

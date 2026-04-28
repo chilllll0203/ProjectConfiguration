@@ -2,16 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/style_personalaccount1.css">
+    <link rel="stylesheet" href="/static/style_profile.css">
     <title>Личный кабинет студента {{username}}</title>
 </head>
 <body>
-    <h1>Личный Кабинет</h1>
-    <form action="/person_account_student" method="post" class="menu-form">
-        <button type="submit" name="option" value="home">Главная</button>
-        <button type="submit" name="option" value="view_your_achievements">Просмотреть свои достижения</button>
-        <button type="submit" name="option" value="add_achievements">Добавить достижение</button>
-        <button type="submit" name="option" value="settings">Настройки</button>
-    </form>
+    <header>
+        <h1>Личный Кабинет</h1>
+        <div class="menu-form">
+            <a href="/profile">Главная</a>
+            <a href ="/achievements">Просмотреть свои достижения</a>
+            <a href="/settings">Настройки</a>
+        </div>
+    </header>
+    <main>
+
+    </main>
 </body>
 </html>

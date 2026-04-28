@@ -6,18 +6,22 @@
     <title>Настройки</title>
 </head>
 <body>
-<h1>Настройки</h1>
-    <form action="/settingsteacher" method="post" class="menu-form">
-        <button type="submit" name="option" value="home">Главная</button>
-        <button type="submit" name="option" value="view_all_events">Просмотреть все мероприятия</button>
-        <button type="submit" name="option" value="add_event">Добавить мероприятие</button>
-        <button type="submit" name="option" value="settings">Настройки</button>
-    </form>
+<header>
+    <h1>Личный Кабинет</h1>
+    <div class="menu-form">
+        <a href="/profile">Главная</a>
+        <a href="">Просмотреть все мероприятия</a>
+        <a href="">Добавить мероприятие</a>
+        <a href="/settings">Настройки</a>
+    </div>
+</header>
+<main>
     <form action="/settingsteacher" method="post" class="settings-information">
         <text>Имя пользователя: {{username}}</text>
         <text>Почта пользователя: {{email}}</text>
         <button type="submit" name="changepassword" value="change">Сменить пароль</button>
         <button type="submit" name="exitaccount" value="exit">Выйти из аккаунта</button>
     </form>
+</main>
 </body>
 </html>

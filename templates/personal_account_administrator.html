@@ -2,17 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/style_personalaccount3.css">
+    <link rel="stylesheet" href="/static/style_profile.css">
     <title>Личный кабинет администратора {{username}}</title>
 </head>
 <body>
+<header>
     <h1>Личный Кабинет</h1>
-    <form action="/person_account_administrator" method="post" class="menu-form">
-        <button type="submit" name="option" value="home">Главная</button>
-        <button type="submit" name="option" value="table_users">Таблица пользователей</button>
-        <button type="submit" name="option" value="table_events">Таблица мероприятий</button>
-        <button type="submit" name="option" value="table_achievements">Таблица достижений</button>
-        <button type="submit" name="option" value="settings">Настройки</button>
-    </form>
+    <div class="menu-form">
+        <a href="/profile">Главная</a>
+        <a href ="">Просмотреть все достижения</a>
+        <a href="">Просмотреть все мероприятия </a>
+        <a href="">Просмотреть всех пользователей </a>
+        <a href="/settings">Настройки</a>
+    </div>
+</header>
+<main>
+    
+</main>
 </body>
 </html>

@@ -26,15 +26,10 @@ async def login_user(request: Request, username: str = Form(...), password: str 
     request.session["user_id"] = user.id
     request.session["username"] = user.username
     request.session["email"] = user.email
+    request.session["role"] = user.role
     if(user.username == username and bcrypt.checkpw(password.encode("utf-8"), user.hashed_password.encode("utf-8"))):
-        if(user.role == "student"):
-            return RedirectResponse("/person_account_student", status_code=303)
-        elif(user.role == "teacher"):
-            return RedirectResponse("/person_account_teacher", status_code=303)
-        elif(user.role == "administrator"):
-            return RedirectResponse("/person_account_administrator", status_code=303)
-        else:
-            return "Произошла ошибка попробуйте снова!"
+        return RedirectResponse("/profile",status_code=303)
+
 
 @router.get("/register", summary="Форма регистрации")
 def get_form(request: Request):

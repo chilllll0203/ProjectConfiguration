@@ -52,7 +52,7 @@ async def get_events(session: AsyncSession = Depends(get_session)):
         }
         for event in events
     ]
-@router.get("/achievements",summary="Получение достижений")
+@router.get("/achievements_admin",summary="Получение достижений")
 async def get_achievements(session: AsyncSession = Depends(get_session)):
     result = await session.execute(select(AchievementModel))
     achievements = result.scalars().all()  # scalars() превращает Result в объекты модели

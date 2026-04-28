@@ -30,7 +30,15 @@ h1 {
     margin-bottom: 30px;
 }
 
-.menu-form button {
+main{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+}
+
+.menu-form a {
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
@@ -39,9 +47,10 @@ h1 {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    text-decoration: none;
 }
 
-.menu-form button:hover {
+.menu-form a:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
 }
