@@ -6,14 +6,16 @@
     <title>Добавление мероприятия</title>
 </head>
 <body>
-<h1>Добавление мероприятия</h1>
-    <form action="/person_account_teacher" method="post" class="menu-form">
-        <button type="submit" name="option" value="home">Главная</button>
-        <button type="submit" name="option" value="view_all_events">Просмотреть все мероприятия</button>
-        <button type="submit" name="option" value="add_event">Добавить мероприятие</button>
-        <button type="submit" name="option" value="settings">Настройки</button>
-    </form>
-    <form action="/add_event" method="post" class="add_event">
+    <header>
+        <h1>Добавление мероприятия</h1>
+        <div class="menu-form">
+            <a href="/profile">Главная</a>
+            <a href ="/events">Просмотреть все мероприятия</a>
+            <a href="/settings">Настройки</a>
+        </div>
+    </header>
+    <main>
+        <form action="/add_event" method="post" class="add_event">
         <label for="title">Введите название мероприятия:</label>
         <input type="text" id="title" name="title" required><br><br>
 
@@ -34,5 +36,6 @@
 
         <button type="submit" name="addevent" value="addevent">Добавить мероприятие</button>
     </form>
+    </main>
 </body>
 </html>

@@ -10,12 +10,15 @@ from jwt import PyJWKClient, PyJWKClientError
 import jwt
 import time
 import logging
+from models import UserModel
+import bcrypt
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 logging.basicConfig(level=logging.INFO)
 
+# Профиль пользователей(выбирается в зависимости от роли)
 @router.get("/profile")
 def profile(request: Request):
     role = request.session["role"]
@@ -28,18 +31,20 @@ def profile(request: Request):
     else:
         return "Произошла ошибка попробуйте снова!"
 
+# Настройки пользователей(выбирается в зависимости от роли)
 @router.get("/settings")
 def settings(request: Request):
     role = request.session["role"]
     if (role == "student"):
-        return templates.TemplateResponse(request, "settingsstudent.html")
+        return templates.TemplateResponse(request, "settingsstudent.html",{"username":request.session["username"],"email":request.session["email"]})
     elif (role == "teacher"):
-        return templates.TemplateResponse(request, "settingsteacher.html")
+        return templates.TemplateResponse(request, "settingsteacher.html",{"username":request.session["username"],"email":request.session["email"]})
     elif (role == "administrator"):
         return templates.TemplateResponse(request, "settingsadmin.html", {"username":request.session["username"],"email":request.session["email"]})
     else:
         return "Произошла ошибка попробуйте снова!"
-
+    
+# Функция на проверку роли студента, если не студент выкидывает  ошибку, иначе дает доступ на страницу с достижениями определенного студента.
 @router.get("/achievements")
 def achievements(request: Request):
     role = request.session["role"]
@@ -47,6 +52,7 @@ def achievements(request: Request):
         raise  HTTPException(status_code=403,detail="Access forbidden")
     return templates.TemplateResponse(request, "achievements.html")
 
+# Получени токена пользователя с телеграмма
 @router.post("/tg_auth")
 async def tg_auth(request: Request,
              id_token: str = Body(),
@@ -90,96 +96,13 @@ async def tg_auth(request: Request,
         logging.error(f"Ошибка: {e}")
     logging.info(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
     
-    
-    
-
-# @router.get("/person_account_student")
-# def person_account_student(request: Request):
-#     return templates.TemplateResponse(request, "personal_account_student.html")
-# @router.post("/person_account_student")
-# def person_account_student_post(request: Request, option: str = Form(...)):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     if option == "home":
-#         return templates.TemplateResponse(request, "personal_account_student.html", {"username": username, "email": email})
-#     elif option == "view_your_achievements":
-#         return RedirectResponse("/view_your_achievements", status_code=303)
-#     elif option == "add_achievements":
-#         return templates.TemplateResponse(request, "add_achievements.html")
-#     elif option == "settings":
-#         return templates.TemplateResponse(request, "settingsstudent.html", {"username": username, "email": email})
-#
-#
-# @router.get("/person_account_teacher")
-# def person_account_teacher(request: Request):
-#     return templates.TemplateResponse(request, "personal_account_teacher.html")
-# @router.post("/person_account_teacher")
-# def person_account_teacher_post(request: Request, option: str = Form(...)):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     if option == "home":
-#         return templates.TemplateResponse(request, "personal_account_teacher.html", {"username": username, "email": email})
-#     elif option == "view_all_events":
-#         return RedirectResponse("/events", status_code=303)
-#     elif option == "add_event":
-#         return templates.TemplateResponse(request, "add_event.html")
-#     elif option == "settings":
-#         return templates.TemplateResponse(request, "settingsteacher.html", {"username": username, "email": email})
-#
-#
-# @router.get("/person_account_administrator")
-# def person_account_administrator(request: Request):
-#     return templates.TemplateResponse(request, "personal_account_administrator.html")
-# @router.post("/person_account_administrator")
-# def person_account_administrator_post(request: Request, option: str = Form(...)):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     if option == "home":
-#         return templates.TemplateResponse(request, "personal_account_administrator.html",{"username": username, "email": email})
-#     elif option == "table_users":
-#         return RedirectResponse("/users", status_code=303)
-#     elif option == "table_events":
-#         return RedirectResponse("/events", status_code=303)
-#     elif option == "table_achievements":
-#         return RedirectResponse("/achievements", status_code=303)
-#     elif option == "settings":
-#         return templates.TemplateResponse(request, "settingsadmin.html", {"username": username, "email": email})
-#
-#
-# @router.get("/settingsadmin")
-# def settings_admin(request: Request):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     return templates.TemplateResponse(request, "settingsadmin.html", {"username": username, "email": email})
-# @router.post("/settingsadmin")
-# def settings_admin_post(request: Request, option: str = Form(None), changepassword: str = Form(None), exitaccount: str = Form(None)):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     if option == "home":
-#         return templates.TemplateResponse(request, "personal_account_administrator.html",{"username": username, "email": email})
-#     elif option == "table_users":
-#         return RedirectResponse("/users", status_code=303)
-#     elif option == "table_events":
-#         return RedirectResponse("/events", status_code=303)
-#     elif option == "table_achievements":
-#         return RedirectResponse("/achievements", status_code=303)
-#     elif option == "settings":
-#         return templates.TemplateResponse(request, "settingsadmin.html", {"username": username, "email": email})
-#     if changepassword:
-#         return {"message": "Пока эта функция не реализована!"}
-#     if exitaccount:
-#         request.session.clear()
-#         return templates.TemplateResponse(request, "extrance.html")
-#
-#
-#
+# Страница добавления достижения
 @router.get("/add_achievements")
 def add_achievements_get(request: Request):
     return templates.TemplateResponse(request, "add_achievements.html")
 @router.post("/add_achievements")
 async def add_achievements_post(
         request: Request,
-        option: str = Form(None),
         nameEvent: str = Form(None),
         category: str = Form(None),
         result_achievement: str = Form(None),
@@ -187,16 +110,6 @@ async def add_achievements_post(
         addachievement: str = Form(None),
         session: AsyncSession = Depends(get_session)
 ):
-    username = request.session["username"]
-    email = request.session["email"]
-    if option == "home":
-        return templates.TemplateResponse(request, "personal_account_student.html",{"username": username, "email": email})
-    elif option == "view_your_achievements":
-        return RedirectResponse("/view_your_achievements", status_code=303)
-    elif option == "add_achievements":
-        return templates.TemplateResponse(request, "add_achievements.html")
-    elif option == "settings":
-        return templates.TemplateResponse(request, "settingsstudent.html", {"username": username, "email": email})
     if addachievement == "addachievement":
         result = await session.execute(select(EventModel).where(EventModel.title == nameEvent))
         event = result.scalars().first()
@@ -213,15 +126,13 @@ async def add_achievements_post(
             await session.commit()
         return RedirectResponse("/achievements", status_code=303)
 
-
-
+# Страница добавления мероприятия
 @router.get("/add_event")
 def add_event_get(request: Request):
     return templates.TemplateResponse(request, "add_event.html")
 @router.post("/add_event")
 async def add_event_post(
         request: Request,
-        option: str = Form(None),
         title: str = Form(...),
         description: str = Form(...),
         event_date: str = Form(...),
@@ -229,17 +140,6 @@ async def add_event_post(
         addevent: str = Form(None),
         session: AsyncSession = Depends(get_session)
 ):
-    username = request.session["username"]
-    email = request.session["email"]
-    if option == "home":
-        return templates.TemplateResponse(request, "personal_account_teacher.html",
-                                          {"username": username, "email": email})
-    elif option == "view_all_events":
-        return RedirectResponse("/events", status_code=303)
-    elif option == "add_event":
-        return templates.TemplateResponse(request, "add_event.html")
-    elif option == "settings":
-        return templates.TemplateResponse(request, "settingsteacher.html", {"username": username, "email": email})
     if addevent == "addevent":
         event = EventModel(
             title=title,
@@ -252,53 +152,19 @@ async def add_event_post(
         session.add(event)
         await session.commit()
         return RedirectResponse("/events", status_code=303)
-#
-#
-#
-# @router.get("/settingsstudent")
-# def settings_student_get(request: Request):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     return templates.TemplateResponse(request, "settingsstudent.html", {"username": username, "email": email})
-# @router.post("/settingsstudent")
-# def settings_student_post(request: Request, option: str = Form(None), changepassword: str = Form(None),exitaccount: str = Form(None)):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     if option == "home":
-#         return templates.TemplateResponse(request, "personal_account_student.html",{"username": username, "email": email})
-#     elif option == "view_your_achievements":
-#         return RedirectResponse("/view_your_achievements", status_code=303)
-#     elif option == "add_achievements":
-#         return templates.TemplateResponse(request, "add_achievements.html")
-#     elif option == "settings":
-#         return templates.TemplateResponse(request, "settingsstudent.html", {"username": username, "email": email})
-#     if changepassword:
-#         return {"message": "Пока эта функция не реализована!"}
-#     if exitaccount:
-#         request.session.clear()
-#         return templates.TemplateResponse(request, "extrance.html")
-#
-#
-#
-# @router.get("/settingsteacher")
-# def settings_teacher_get(request: Request):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     return templates.TemplateResponse(request, "settingsteacher.html", {"username": username, "email": email})
-# @router.post("/settingsteacher")
-# def settings_teacher_post(request: Request, option: str = Form(None), changepassword: str = Form(None),exitaccount: str = Form(None)):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     if option == "home":
-#         return templates.TemplateResponse(request, "personal_account_teacher.html",{"username": username, "email": email})
-#     elif option == "view_all_events":
-#         return RedirectResponse("/events", status_code=303)
-#     elif option == "add_event":
-#         return templates.TemplateResponse(request, "add_event.html")
-#     elif option == "settings":
-#         return templates.TemplateResponse(request, "settingsteacher.html", {"username": username, "email": email})
-#     if changepassword:
-#         return {"message": "Пока эта функция не реализована!"}
-#     if exitaccount:
-#         request.session.clear()
-#         return templates.TemplateResponse(request, "extrance.html")
+
+# Страница смены пароля 
+@router.get("/change_password")
+def change_password(request:Request):
+    return templates.TemplateResponse(request,"change_password.html")
+@router.post("/change_password")
+async def change_password(request:Request,current_password: str = Form(...),new_password: str = Form(...),button_change: str = Form(None),session: AsyncSession = Depends(get_session)):
+    user_id = request.session["user_id"]
+    if button_change:
+        result = await session.execute(select(UserModel).where(UserModel.id == user_id))
+        user = result.scalars().first()
+        if bcrypt.checkpw(current_password.encode("utf-8"), user.hashed_password.encode("utf-8")):
+            user.hashed_password = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
+            await session.commit()
+            await session.refresh(user)
+    return RedirectResponse("/settings",status_code=303)

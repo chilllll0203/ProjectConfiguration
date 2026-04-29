@@ -6,14 +6,16 @@
     <title>Добавление достижения</title>
 </head>
 <body>
-<h1>Добавление достижения</h1>
-    <form action="/add_achievements" method="post" class="menu-form">
-        <button type="submit" name="option" value="home">Главная</button>
-        <button type="submit" name="option" value="view_your_achievements">Просмотреть свои достижения</button>
-        <button type="submit" name="option" value="add_achievements">Добавить достижение</button>
-        <button type="submit" name="option" value="settings">Настройки</button>
-    </form>
-    <form action="/add_achievements" method="post" class="add_achievements">
+    <header>
+    <h1>Добавление достижения</h1>
+    <div class="menu-form">
+        <a href="/profile">Главная</a>
+        <a href ="/achievements">Просмотреть свои достижения</a>
+        <a href="/settings">Настройки</a>
+    </div>
+    </header>
+    <main>
+        <form action="/add_achievements" method="post" class="add_achievements">
         <label for="nameEvent">Введите название мероприятия:</label>
         <input type="text" id="nameEvent" name="nameEvent" required><br><br>
 
@@ -33,5 +35,6 @@
 
         <button type="submit" name="addachievement" value="addachievement">Добавить достижение</button>
     </form>
+    </main>
 </body>
 </html>
