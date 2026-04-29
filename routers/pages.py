@@ -163,8 +163,9 @@ async def change_password(request:Request,current_password: str = Form(...),new_
     if button_change:
         result = await session.execute(select(UserModel).where(UserModel.id == user_id))
         user = result.scalars().first()
-        if bcrypt.checkpw(current_password.encode("utf-8"), user.hashed_password):
-            user.hashed_password = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
+        if bcrypt.checkpw(current_password.encode("utf-8"), user.hashed_password.encode("utf-8")):
+            hashed_newpassword = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
+            user.hashed_password = hashed_newpassword.decode("utf-8")
             await session.commit()
             await session.refresh(user)
     return RedirectResponse("/settings",status_code=303)
