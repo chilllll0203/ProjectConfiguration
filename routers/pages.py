@@ -51,36 +51,43 @@ def achievements(request: Request):
 async def tg_auth(request: Request,
              id_token: str = Body(),
              session: AsyncSession = Depends(get_session)):
-    CLIENT_ID = "8758842032"
-    jwks = PyJWKClient("https://oauth.telegram.org/.well-konown/jwks.json")
-    key = jwks.get_signing_key_from_jwt(id_token)
-    payload = jwt.decode(id_token, key.key, algorithms = ["RS256"])
-    
-    if payload.get("iss") != "https://oauth.telegram.org":
-        raise ValueError(f"Неверный issuer: {payload['iss']}")
-    
-    aud = payload.get("aud")
-    if isinstance(aud, list):
-        if CLIENT_ID not in aud:
-            raise ValueError("Неверная аудитория")
-    elif aud != CLIENT_ID:
-        raise ValueError(f"Неверная аудитория: {aud}")
-    
-    if time.time()>payload.get("exp",0):
-        raise ValueError("Токен истек")
-    
-    if payload.get("iat",0) > time.time+60:
-        raise ValueError("Токен выпущен в будущем - возможна подделка")
-    
-    userID = request.session["user_id"]
-    telegramUser = TelegramAuthenticationModel(
-        userID = userID,
-        telegramId = payload.get("id")
-    )
-    session.add(telegramUser)
-    await session.commit()
-    with open("log.txt", "a", encoding="utf-8") as file:
-        file.writelines(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
+    try:
+        CLIENT_ID = "8758842032"
+        jwks = PyJWKClient("https://oauth.telegram.org/.well-known/jwks.json")
+        key = jwks.get_signing_key_from_jwt(id_token)
+        payload = jwt.decode(id_token, key.key, algorithms = ["RS256"])
+        
+        if payload.get("iss") != "https://oauth.telegram.org":
+            raise ValueError(f"Неверный issuer: {payload['iss']}")
+        
+        aud = payload.get("aud")
+        if isinstance(aud, list):
+            if CLIENT_ID not in aud:
+                raise ValueError("Неверная аудитория")
+        elif aud != CLIENT_ID:
+            raise ValueError(f"Неверная аудитория: {aud}")
+        
+        if time.time()>payload.get("exp",0):
+            raise ValueError("Токен истек")
+        
+        if payload.get("iat",0) > time.time+60:
+            raise ValueError("Токен выпущен в будущем - возможна подделка")
+        
+        userID = request.session["user_id"]
+        telegramUser = TelegramAuthenticationModel(
+            userID = userID,
+            telegramId = payload.get("id")
+        )
+        session.add(telegramUser)
+        await session.commit()
+    except PyJWKClient as e:
+        logging.error(f"Ошибка JWKS: {e}")
+        raise HTTPException(status_code=400,detail="Invalid Token Format")
+    except jwt.InvalidTokenError as e:
+        logging.error(f"Невалидный токен: {e}")
+        raise HTTPException(status_code=401,detail="Invalid Token")
+    except Exception as e:
+        logging.error(f"Ошибка: {e}")
     logging.info(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
     
     
