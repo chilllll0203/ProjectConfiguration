@@ -1,12 +1,12 @@
 from datetime import datetime
-from fastapi import APIRouter, Request, Form, Depends, HTTPException, Body
+from fastapi import APIRouter, Request, Form, Depends, HTTPException, Body, status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from deps import get_session
 from models import AchievementModel, EventModel, TelegramAuthenticationModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from jwt import PyJWKClient
+from jwt import PyJWKClient, PyJWKClientError
 import jwt
 import time
 import logging
