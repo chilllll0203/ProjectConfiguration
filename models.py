@@ -35,3 +35,8 @@ class AchievementModel(Base):
     result: Mapped[str]
     document_url: Mapped[str]
     created_at: Mapped[datetime]
+
+class TelegramAuthenticationModel(Base):
+    __tablename__ = "telegram_authentication"
+    userId: Mapped[int] = mapped_column(ForeignKey("users.id"),primary_key=True)
+    telegramId: Mapped[int] = mapped_column(primary_key=True)

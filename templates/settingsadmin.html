@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/style_settings.css">
+    <link rel="stylesheet" href="/static/css/style_settings.css">
     <title>Настройки</title>
+    <script src="static/script/settings.js" defer></script>
 </head>
 <body>
 <header>
@@ -23,7 +24,7 @@
         <button type="submit" name="changepassword" value="change">Сменить пароль</button>
         <button type="submit" name="exitaccount" value="exit">Выйти из аккаунта</button>
     </form>
-    <script async src="https://oauth.telegram.org/js/telegram-login.js?3" data-client-id="8758842032" data-onauth="console.log(data) data-request-access="write"></script>
+    <script async src="https://oauth.telegram.org/js/telegram-login.js?3" data-client-id="8758842032" data-onauth="await postTelegramData(data)" data-request-access="write"></script>
     <button class="tg-auth-button">Sign In with Telegram</button>
 </main>
     

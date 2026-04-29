@@ -9,8 +9,7 @@ import database
 app = FastAPI()
 
 app.add_middleware(SessionMiddleware, secret_key="secret")
-
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static/css", StaticFiles(directory="static"), name="css")
 
 # Подключаем роутеры
 app.include_router(auth.router)

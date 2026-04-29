@@ -46,3 +46,6 @@ uvicorn==0.44.0
 asyncpg
 watchfiles==1.1.1
 websockets==16.0
+PyJWT>=2.8.0
+cryptography>=41.0.0
+requests>=2.31.0

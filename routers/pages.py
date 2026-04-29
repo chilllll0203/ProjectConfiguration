@@ -1,11 +1,14 @@
 from datetime import datetime
-from fastapi import APIRouter, Request, Form, Depends, HTTPException
+from fastapi import APIRouter, Request, Form, Depends, HTTPException, Body
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from deps import get_session
 from models import AchievementModel, EventModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from jwt import PyJWKClient
+import jwt
+import time
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -42,8 +45,43 @@ def achievements(request: Request):
         raise  HTTPException(status_code=403,detail="Access forbidden")
     return templates.TemplateResponse(request, "achievements.html")
 
-# @router.post("/tg_auth")
-# def tg_auth(request: Request):
+@router.post("/tg_auth")
+async def tg_auth(request: Request,
+             id_token: str = Body(),
+             session: AsyncSession = Depends(get_session)):
+    CLIENT_ID = "8758842032"
+    jwks = PyJWKClient("https://oauth.telegram.org/.well-konown/jwks.json")
+    key = jwks.get_signing_key_from_jwt(id_token)
+    payload = jwt.decode(id_token, key.key, algorithms = ["RS256"])
+    
+    if payload.get("iss") != "https://oauth.telegram.org":
+        raise ValueError(f"Неверный issuer: {payload['iss']}")
+    
+    aud = payload.get("aud")
+    if isinstance(aud, list):
+        if CLIENT_ID not in aud:
+            raise ValueError("Неверная аудитория")
+    elif aud != CLIENT_ID:
+        raise ValueError(f"Неверная аудитория: {aud}")
+    
+    if time.time()>payload.get("exp",0):
+        raise ValueError("Токен истек")
+    
+    if payload.get("iat",0) > time.time+60:
+        raise ValueError("Токен выпущен в будущем - возможна подделка")
+    
+    userID = request.session["user_id"]
+    telegramUser = TelegramAuthenticationModel(
+        userID = userID,
+        telegramId = payload.get("id")
+    )
+    session.add(telegramUser)
+    await session.commit()
+    with open("log.txt", "a", encoding="utf-8") as file:
+        file.writelines(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
+    
+    
+    
 
 # @router.get("/person_account_student")
 # def person_account_student(request: Request):
@@ -125,45 +163,45 @@ def achievements(request: Request):
 #
 #
 #
-# @router.get("/add_achievements")
-# def add_achievements_get(request: Request):
-#     return templates.TemplateResponse(request, "add_achievements.html")
-# @router.post("/add_achievements")
-# async def add_achievements_post(
-#         request: Request,
-#         option: str = Form(None),
-#         nameEvent: str = Form(None),
-#         category: str = Form(None),
-#         result_achievement: str = Form(None),
-#         document_url: str = Form(None),
-#         addachievement: str = Form(None),
-#         session: AsyncSession = Depends(get_session)
-# ):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     if option == "home":
-#         return templates.TemplateResponse(request, "personal_account_student.html",{"username": username, "email": email})
-#     elif option == "view_your_achievements":
-#         return RedirectResponse("/view_your_achievements", status_code=303)
-#     elif option == "add_achievements":
-#         return templates.TemplateResponse(request, "add_achievements.html")
-#     elif option == "settings":
-#         return templates.TemplateResponse(request, "settingsstudent.html", {"username": username, "email": email})
-#     if addachievement == "addachievement":
-#         result = await session.execute(select(EventModel).where(EventModel.title == nameEvent))
-#         event = result.scalars().first()
-#         if event:
-#             achievement = AchievementModel(
-#                 student_id=request.session["user_id"],
-#                 event_id=event.id,
-#                 category=category,
-#                 result=result_achievement,
-#                 document_url=document_url,
-#                 created_at=datetime.now()
-#             )
-#             session.add(achievement)
-#             await session.commit()
-#         return RedirectResponse("/view_your_achievements", status_code=303)
+@router.get("/add_achievements")
+def add_achievements_get(request: Request):
+    return templates.TemplateResponse(request, "add_achievements.html")
+@router.post("/add_achievements")
+async def add_achievements_post(
+        request: Request,
+        option: str = Form(None),
+        nameEvent: str = Form(None),
+        category: str = Form(None),
+        result_achievement: str = Form(None),
+        document_url: str = Form(None),
+        addachievement: str = Form(None),
+        session: AsyncSession = Depends(get_session)
+):
+    username = request.session["username"]
+    email = request.session["email"]
+    if option == "home":
+        return templates.TemplateResponse(request, "personal_account_student.html",{"username": username, "email": email})
+    elif option == "view_your_achievements":
+        return RedirectResponse("/view_your_achievements", status_code=303)
+    elif option == "add_achievements":
+        return templates.TemplateResponse(request, "add_achievements.html")
+    elif option == "settings":
+        return templates.TemplateResponse(request, "settingsstudent.html", {"username": username, "email": email})
+    if addachievement == "addachievement":
+        result = await session.execute(select(EventModel).where(EventModel.title == nameEvent))
+        event = result.scalars().first()
+        if event:
+            achievement = AchievementModel(
+                student_id=request.session["user_id"],
+                event_id=event.id,
+                category=category,
+                result=result_achievement,
+                document_url=document_url,
+                created_at=datetime.now()
+            )
+            session.add(achievement)
+            await session.commit()
+        return RedirectResponse("/achievements", status_code=303)
 #
 #
 #
