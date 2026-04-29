@@ -80,7 +80,7 @@ async def tg_auth(request: Request,
         )
         session.add(telegramUser)
         await session.commit()
-    except PyJWKClient as e:
+    except PyJWKClientError as e:
         logging.error(f"Ошибка JWKS: {e}")
         raise HTTPException(status_code=400,detail="Invalid Token Format")
     except jwt.InvalidTokenError as e:
