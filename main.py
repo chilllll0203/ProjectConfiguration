@@ -9,13 +9,15 @@ import database
 app = FastAPI()
 
 app.add_middleware(SessionMiddleware, secret_key="secret")
-app.mount("/static/css", StaticFiles(directory="static"), name="css")
+app.mount("/css", StaticFiles(directory="static/css"), name="css")
+app.mount("/script", StaticFiles(directory="static/script"), name="script")
 
 # Подключаем роутеры
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(pages.router)
 app.include_router(database.router)
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0")

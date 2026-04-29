@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request, Form, Depends, HTTPException, Body
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from deps import get_session
-from models import AchievementModel, EventModel
+from models import AchievementModel, EventModel, TelegramAuthenticationModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from jwt import PyJWKClient
@@ -79,6 +79,7 @@ async def tg_auth(request: Request,
     await session.commit()
     with open("log.txt", "a", encoding="utf-8") as file:
         file.writelines(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
+    print(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
     
     
     
