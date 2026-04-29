@@ -9,10 +9,12 @@ from sqlalchemy import select
 from jwt import PyJWKClient
 import jwt
 import time
+import logging
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
+logging.basicConfig(level=logging.INFO)
 
 @router.get("/profile")
 def profile(request: Request):
@@ -79,7 +81,7 @@ async def tg_auth(request: Request,
     await session.commit()
     with open("log.txt", "a", encoding="utf-8") as file:
         file.writelines(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
-    print(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
+    logging.info(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
     
     
     
@@ -203,46 +205,46 @@ async def add_achievements_post(
             session.add(achievement)
             await session.commit()
         return RedirectResponse("/achievements", status_code=303)
-#
-#
-#
-# @router.get("/add_event")
-# def add_event_get(request: Request):
-#     return templates.TemplateResponse(request, "add_event.html")
-# @router.post("/add_event")
-# async def add_event_post(
-#         request: Request,
-#         option: str = Form(None),
-#         title: str = Form(...),
-#         description: str = Form(...),
-#         event_date: str = Form(...),
-#         type: str = Form(...),
-#         addevent: str = Form(None),
-#         session: AsyncSession = Depends(get_session)
-# ):
-#     username = request.session["username"]
-#     email = request.session["email"]
-#     if option == "home":
-#         return templates.TemplateResponse(request, "personal_account_teacher.html",
-#                                           {"username": username, "email": email})
-#     elif option == "view_all_events":
-#         return RedirectResponse("/events", status_code=303)
-#     elif option == "add_event":
-#         return templates.TemplateResponse(request, "add_event.html")
-#     elif option == "settings":
-#         return templates.TemplateResponse(request, "settingsteacher.html", {"username": username, "email": email})
-#     if addevent == "addevent":
-#         event = EventModel(
-#             title=title,
-#             description=description,
-#             event_date=datetime.strptime(event_date, '%Y-%m-%d').date(),
-#             type=type,
-#             created_by=request.session["user_id"],
-#             created_at=datetime.now()
-#         )
-#         session.add(event)
-#         await session.commit()
-#         return RedirectResponse("/events", status_code=303)
+
+
+
+@router.get("/add_event")
+def add_event_get(request: Request):
+    return templates.TemplateResponse(request, "add_event.html")
+@router.post("/add_event")
+async def add_event_post(
+        request: Request,
+        option: str = Form(None),
+        title: str = Form(...),
+        description: str = Form(...),
+        event_date: str = Form(...),
+        type: str = Form(...),
+        addevent: str = Form(None),
+        session: AsyncSession = Depends(get_session)
+):
+    username = request.session["username"]
+    email = request.session["email"]
+    if option == "home":
+        return templates.TemplateResponse(request, "personal_account_teacher.html",
+                                          {"username": username, "email": email})
+    elif option == "view_all_events":
+        return RedirectResponse("/events", status_code=303)
+    elif option == "add_event":
+        return templates.TemplateResponse(request, "add_event.html")
+    elif option == "settings":
+        return templates.TemplateResponse(request, "settingsteacher.html", {"username": username, "email": email})
+    if addevent == "addevent":
+        event = EventModel(
+            title=title,
+            description=description,
+            event_date=datetime.strptime(event_date, '%Y-%m-%d').date(),
+            type=type,
+            created_by=request.session["user_id"],
+            created_at=datetime.now()
+        )
+        session.add(event)
+        await session.commit()
+        return RedirectResponse("/events", status_code=303)
 #
 #
 #
