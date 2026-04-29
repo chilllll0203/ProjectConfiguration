@@ -163,7 +163,7 @@ async def change_password(request:Request,current_password: str = Form(...),new_
     if button_change:
         result = await session.execute(select(UserModel).where(UserModel.id == user_id))
         user = result.scalars().first()
-        if bcrypt.checkpw(current_password.encode("utf-8"), user.hashed_password.encode("utf-8")):
+        if bcrypt.checkpw(current_password.encode("utf-8"), user.hashed_password):
             user.hashed_password = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
             await session.commit()
             await session.refresh(user)
