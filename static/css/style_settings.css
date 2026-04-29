@@ -81,6 +81,7 @@ main{
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    text-decoration: none;
 }
 
 .settings-information a:hover {

@@ -16,12 +16,12 @@
     </div>
 </header>
 <main>
-    <form action="/settingsteacher" method="post" class="settings-information">
+    <div class="settings-information">
         <text>Имя пользователя: {{username}}</text>
         <text>Почта пользователя: {{email}}</text>
-        <button type="submit" name="changepassword" value="change">Сменить пароль</button>
-        <button type="submit" name="exitaccount" value="exit">Выйти из аккаунта</button>
-    </form>
+        <a href="/change_password">Сменить пароль</href>
+        <a href="/">Выйти из аккаунта</href>
+    </div>
     <script async src="https://oauth.telegram.org/js/telegram-login.js?3" data-client-id="8758842032" data-onauth="postTelegramData(data)" data-request-access="write"></script>
     <button class="tg-auth-button">Sign In with Telegram</button>
 </main>
