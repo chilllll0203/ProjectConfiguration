@@ -4,7 +4,6 @@ async function copyDiv() {
 
     const container = document.getElementById("container");
     const template = container.querySelector(".item");
-    container.innerHTML = "";
 
     data.forEach(item => {
         const clone = template.cloneNode(true);
@@ -16,7 +15,7 @@ async function copyDiv() {
 
         container.appendChild(clone);
     });
-    template.remove();
+    // template.remove();
 }
 
 copyDiv();
