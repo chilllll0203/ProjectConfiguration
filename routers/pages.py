@@ -15,7 +15,6 @@ import bcrypt
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
-
 logging.basicConfig(level=logging.INFO)
 
 # Профиль пользователей(выбирается в зависимости от роли)
@@ -53,48 +52,56 @@ def achievements(request: Request):
     return templates.TemplateResponse(request, "achievements.html")
 
 # Получени токена пользователя с телеграмма
+jwks_client = PyJWKClient("https://oauth.telegram.org/.well-known/jwks.json")
 @router.post("/tg_auth")
 async def tg_auth(request: Request,
-             id_token: str = Body(),
+             id_token: str = Body(embed=True),
              session: AsyncSession = Depends(get_session)):
     try:
         CLIENT_ID = "8758842032"
-        jwks = PyJWKClient("https://oauth.telegram.org/.well-known/jwks.json")
-        key = jwks.get_signing_key_from_jwt(id_token)
-        payload = jwt.decode(id_token, key.key, algorithms = ["RS256"])
-        
-        if payload.get("iss") != "https://oauth.telegram.org":
-            raise ValueError(f"Неверный issuer: {payload['iss']}")
-        
-        aud = payload.get("aud")
-        if isinstance(aud, list):
-            if CLIENT_ID not in aud:
-                raise ValueError("Неверная аудитория")
-        elif aud != CLIENT_ID:
-            raise ValueError(f"Неверная аудитория: {aud}")
-        
-        if time.time()>payload.get("exp",0):
-            raise ValueError("Токен истек")
-        
-        if payload.get("iat",0) > time.time+60:
-            raise ValueError("Токен выпущен в будущем - возможна подделка")
-        
+        key = jwks_client.get_signing_key_from_jwt(id_token)
+        payload = jwt.decode(
+            id_token, 
+            key.key, 
+            algorithms = ["RS256"],
+            audience = "8758842032",
+            issuer="https://oauth.telegram.org",
+            leeway=30
+        )
         userID = request.session["user_id"]
+
+        result = await session.execute(
+            select(TelegramAuthenticationModel).where(
+                TelegramAuthenticationModel.telegramId == payload.get("id")
+            )
+        )
+        telegram = result.scalar_one_or_none()
+        if(telegram):
+            logging.warning("Телеграмм уже залогинен")
+            raise HTTPException(status_code=409, detail="Telegram already linked")
+
         telegramUser = TelegramAuthenticationModel(
-            userID = userID,
+            userId = userID,
             telegramId = payload.get("id")
         )
         session.add(telegramUser)
         await session.commit()
+        logging.info(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
+    
     except PyJWKClientError as e:
         logging.error(f"Ошибка JWKS: {e}")
-        raise HTTPException(status_code=400,detail="Invalid Token Format")
+        raise HTTPException(status_code=502, detail="Failed to fetch signing keys")
+
     except jwt.InvalidTokenError as e:
-        logging.error(f"Невалидный токен: {e}")
-        raise HTTPException(status_code=401,detail="Invalid Token")
+        logging.error(f"Невалидный токен: {e}\n{id_token}")
+        raise HTTPException(status_code=401, detail="Invalid Token")
+
+    except HTTPException:
+        raise
+
     except Exception as e:
         logging.error(f"Ошибка: {e}")
-    logging.info(f"Была создана связка telegram: {telegramUser.telegramId}, user: {telegramUser.userId}"+"\n")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error")
     
 # Страница добавления достижения
 @router.get("/add_achievements")
